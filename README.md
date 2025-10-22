@@ -2,7 +2,7 @@
 
 This repository contains the source code, data processing scripts, model training, and evaluation notebooks for the reproducible benchmark study described in our paper:
 
-> Jin, S. & Komarov, M. M. (2025). *Reproducible Benchmark of Wavelet-Enhanced Intrabody Communication Biometric Identification*. Scientific Reports.
+> Jin, S. & Komarov, M. M. (2025). *Reproducible Benchmark of Wavelet-Enhanced Intrabody Communication Biometric Identification*. 
 
 Our work establishes the first public, leakage-free benchmark for IBC biometrics to address methodological flaws in prior studies and provide a reliable baseline for future research.
 
@@ -78,7 +78,7 @@ If you use this code or benchmark in your research, please cite our paper:
 @article{jin2025ibc,
   title={Reproducible Benchmark of Wavelet-Enhanced Intrabody Communication Biometric Identification},
   author={Jin, Seungmin and Komarov, Mikhail M.},
-  journal={Scientific Reports},
+  journal={},
   year={2025}
 }
 ```
