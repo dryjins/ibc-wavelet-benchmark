@@ -84,4 +84,3 @@ If you use this code or benchmark in your research, please cite our paper:
 ```
 ## License
 This project is licensed under the MIT License.
-```
