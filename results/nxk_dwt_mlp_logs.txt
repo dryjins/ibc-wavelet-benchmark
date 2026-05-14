@@ -1,0 +1,45 @@
+
+===== Fold 1/5 =====
+[Fold 1] Train2/Query shapes: (1005, 12) / (116, 12) | Enroll: 35
+[Fold 1] Standardization applied (external z-score w.r.t train)
+[Fold 1] Warmup start (epochs=50)
+[Fold 1] Warmup done | val_acc=0.2871
+[Fold 1] Full training start (epochs=1000)
+[Fold 1] Full training done | val_acc=0.3663 | pred_classes=18 | top_ratio=0.267
+[Fold 1] Metrics: acc=0.0345, FAR=0.0420, FRR=0.2957, EER=0.4111057507310559
+
+===== Fold 2/5 =====
+[Fold 2] Train2/Query shapes: (969, 12) / (152, 12) | Enroll: 35
+[Fold 2] Standardization applied (external z-score w.r.t train)
+[Fold 2] Warmup start (epochs=50)
+[Fold 2] Warmup done | val_acc=0.2371
+[Fold 2] Full training start (epochs=1000)
+[Fold 2] Full training done | val_acc=0.4021 | pred_classes=19 | top_ratio=0.289
+[Fold 2] Metrics: acc=0.0132, FAR=0.0341, FRR=0.2379, EER=0.5195536425495418
+
+===== Fold 3/5 =====
+[Fold 3] Train2/Query shapes: (934, 12) / (187, 12) | Enroll: 30
+[Fold 3] Standardization applied (external z-score w.r.t train)
+[Fold 3] Warmup start (epochs=50)
+[Fold 3] Warmup done | val_acc=0.2979
+[Fold 3] Full training start (epochs=1000)
+[Fold 3] Full training done | val_acc=0.3830 | pred_classes=18 | top_ratio=0.372
+[Fold 3] Metrics: acc=0.0000, FAR=0.0370, FRR=0.2222, EER=0.49693302282817475
+
+===== Fold 4/5 =====
+[Fold 4] Train2/Query shapes: (822, 12) / (299, 12) | Enroll: 20
+[Fold 4] Standardization applied (external z-score w.r.t train)
+[Fold 4] Warmup start (epochs=50)
+[Fold 4] Warmup done | val_acc=0.3253
+[Fold 4] Full training start (epochs=1000)
+[Fold 4] Full training done | val_acc=0.3614 | pred_classes=22 | top_ratio=0.169
+[Fold 4] Metrics: acc=0.0301, FAR=0.0348, FRR=0.1367, EER=0.4884249429749035
+
+===== Fold 5/5 =====
+[Fold 5] Train2/Query shapes: (904, 12) / (217, 12) | Enroll: 30
+[Fold 5] Standardization applied (external z-score w.r.t train)
+[Fold 5] Warmup start (epochs=50)
+[Fold 5] Warmup done | val_acc=0.2747
+[Fold 5] Full training start (epochs=1000)
+[Fold 5] Full training done | val_acc=0.3736 | pred_classes=25 | top_ratio=0.385
+[Fold 5] Metrics: acc=0.0184, FAR=0.0396, FRR=0.2372, EER=0.4816960825705208

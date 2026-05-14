@@ -1,0 +1,6 @@
+Cortex-M4 96MHz, 3.3V, 35mA — DWT(db4,L2) stats pipeline
+cycles_total: 52736.0
+time_s: 0.0005493333333333333
+energy_J: 6.3448e-05
+cycles_zscore: 1536.0
+cycles_dwt: 51200.0

@@ -1,20 +1,11 @@
-# Core libraries for data handling and computation
 numpy
 pandas
 scipy
-
-# Machine learning and deep learning frameworks
 scikit-learn
 torch
-
-# Wavelet and signal processing
-pywavelets
+PyWavelets
 kymatio
-
-# Utility and plotting
 requests
 tqdm
 matplotlib
-
-# Additional models mentioned in experiments
 lightgbm

@@ -1,91 +1,148 @@
 # Reproducible Benchmark of Wavelet-Enhanced Intrabody Communication Biometric Identification
 
-This repository contains the source code, data processing scripts, and analysis notebooks for the reproducible benchmark study described in our paper:
+This repository contains code, processed data, notebooks, and experiment artifacts for the study:
 
-> Jin, S. & Komarov, M. M. (2025). *Reproducible Benchmark of Wavelet-Enhanced Intrabody Communication Biometric Identification*. Scientific Reports (TBD).
+> Jin, S. and Komarov, M. M. (2025). *Reproducible Benchmark of Wavelet-Enhanced Intrabody Communication Biometric Identification*.
 
-Our work establishes the first public, leakage-free benchmark for IBC biometrics to address methodological flaws in prior studies and provide a reliable baseline for future research.
+The repository focuses on the reproducible benchmark pipeline. The manuscript source is maintained separately in Overleaf and is intentionally excluded from this GitHub repository.
 
 ## Key Contributions
-- **Leakage-Free Protocol**: We implement strict subject-wise data splits to prevent data leakage and provide a realistic evaluation of model performance.
-- **Comprehensive Evaluation**: We systematically compare multiple feature sets (raw spectra, DWT statistics, and their combination) across a range of classifiers, from classical methods to lightweight deep learning models.
-- **Reproducibility**: All code, data, and experimental pipelines are made publicly available to ensure full reproducibility.
-- **Embedded Feasibility**: We profile the feature extraction process on a Cortex-M4 class MCU to demonstrate the practical viability of our approach for wearable devices.
 
-## Summary of Results
+- **Leakage-free protocol:** strict subject-wise splits prevent subject leakage between training and evaluation.
+- **Feature comparison:** raw spectra, DWT statistics, lifting wavelets, scattering features, and fused representations are compared.
+- **Model comparison:** classical models, template/linear baselines, and closed-set neural upper-bound analyses are separated.
+- **Embedded feasibility:** wavelet feature extraction and classifier inference are profiled for low-power wearable constraints.
 
-Our key finding is that a lightweight Multilayer Perceptron (MLP) trained on a combination of raw spectra and Discrete Wavelet Transform (DWT) features achieves the highest accuracy. This demonstrates the power of feature fusion for this task.
+## Evaluation Positioning
 
-| Model        | Feature Set | Validation Accuracy (%) |
-|--------------|-------------|-------------------------|
-| **MLP**      | **Combined**| **~83%**                |
-| SpectralCNN  | Raw         | ~74%                    |
-| Random Forest| Combined    | ~49%                    |
-| SVD (Ridge)  | Raw         | ~42%                    |
-| KNN (1-NN)   | Raw         | ~41%                    |
+The primary benchmark is the subject-wise leakage-free evaluation with held-out subjects and enrollment samples. Neural analyses such as MLP and SpectralCNN are closed-set exploratory upper-bound experiments, not the primary subject-wise benchmark.
+
+The latest 5-seed Raw-vs-Combined MLP check reports:
+
+| Setting | Raw MLP | Combined MLP | Combined - Raw |
+|---|---:|---:|---:|
+| Closed-set, 5 seeds | 83.73% ± 3.95% | 81.24% ± 4.58% | -2.49 percentage points |
+
+This supports the revised interpretation that the high closed-set neural result is driven primarily by model capacity and evaluation setting, not by DWT feature fusion.
 
 ## Repository Structure
 
-The repository is structured as a Python package (`ibc_benchmark`) with a main runner script.
+```text
+.
+├── ibc_benchmark/        # Package-style implementation from the main benchmark runner
+├── run_benchmark.py      # Main command-line benchmark runner
+├── analysis_and_visualization.ipynb
+├── data/                 # Raw/processed benchmark data and data-preparation utilities
+├── experiments/          # Additional neural comparison scripts for reviewer analyses
+├── features.py           # Lightweight feature extractors used by notebook/experiment scripts
+├── models.py             # Lightweight model wrappers and neural definitions
+├── eval_utils.py         # Subject-wise split, enrollment, and metric helpers
+├── features/             # Generated feature CSV artifacts
+├── models/               # Training/evaluation CLI and saved model artifacts
+├── notebooks/            # Named notebooks moved out of the repository root
+├── results/              # Reported metrics, logs, and generated figures
+└── requirements.txt      # Python dependencies
+```
 
-- `run_benchmark.py`: Main executable script to run all experiments from the command line.
-- `analysis_and_visualization.ipynb`: A Jupyter Notebook to load results from the `results/` directory and generate the figures and tables from the paper.
-- `requirements.txt`: A list of all Python dependencies required to run the project.
-- `ibc_benchmark/`: A Python package containing the core logic.
-  - `data.py`: Handles dataset download, caching, preprocessing, and subject-wise splitting.
-  - `features.py`: Implements feature extraction methods (raw, DWT, combined).
-  - `models.py`: Defines all model architectures (scikit-learn and PyTorch).
-  - `trainer.py`: Contains the training and evaluation loops for both scikit-learn and PyTorch models.
-  - `evaluate.py`: Includes functions for calculating performance metrics and saving results.
-- `results/`: (Auto-generated) Directory where experiment results are saved as JSON files.
+## Setup
 
-## Setup and Usage
+Create an environment and install dependencies:
 
-### Prerequisites
-- Python 3.8+
-- PyTorch
-- scikit-learn, PyWavelets, NumPy, Pandas, Matplotlib
-- (Optional, for embedded simulation) Keil MDK & CMSIS-DSP
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-### Installation
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/dryjins/ibc-wavelet-benchmark.git
-    cd ibc-wavelet-benchmark
-    ```
-2.  **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+## Data
 
-### Running the Benchmark
-The entire benchmark can be reproduced by running the main execution script. You can specify the desired feature set and model.
+The public IBC dataset is available from Zenodo: `10.5281/zenodo.8214497`.
 
-1.  **Run a single experiment (e.g., MLP on combined features):**
-    ```bash
-    python run_benchmark.py --feature combined --model mlp
-    ```
-2.  **Run all experiments:**
-    ```bash
-    python run_benchmark.py --feature all --model all
-    ```
-    *(This will iterate through all feature-model combinations described in the paper and save the results in the `results/` directory.)*
+The repository includes processed matrices used by the benchmark:
+
+- `data/processed/ibc_processed.csv`: 256-point spectra
+- `data/labels_filtered.csv`: subject labels aligned with the processed spectra
+- `data/processed/features_simple.csv`: Simple-3 features
+- `data/processed/features_dwt_db4_l2.csv`: level-2 db4-DWT statistics
+
+The original archive can be downloaded into `data/raw/` with:
+
+```bash
+python data/download_dataset.py
+```
+
+## Running Analyses
+
+Run the package-style benchmark runner:
+
+```bash
+python run_benchmark.py --feature combined --model mlp
+```
+
+Run all feature/model combinations supported by the package runner:
+
+```bash
+python run_benchmark.py --feature all --model all
+```
+
+Run the closed-set Raw MLP vs Combined MLP reviewer analysis:
+
+```bash
+python experiments/mlp_raw_vs_combined_clean.py
+```
+
+The script writes:
+
+```text
+results/mlp_raw_vs_combined_clean.json
+```
+
+Run a classical model using the legacy training CLI:
+
+```bash
+python models/train_evaluate.py \
+  --features data/processed/features_dwt_db4_l2.csv \
+  --labels data/labels_filtered.csv \
+  --model rf \
+  --output_model models/rf_model.pkl \
+  --output_results results/rf_results.json
+```
+
+## Notebooks
+
+Exploratory notebooks are kept under `notebooks/` with descriptive names:
+
+- `01_preprocess_and_knn_baseline.ipynb`
+- `02_subjectwise_sklearn_benchmarks.ipynb`
+- `03_processed_dataset_builder.ipynb`
+- `04_closed_set_neural_baselines.ipynb`
+- `05_embedded_profiling_and_reports.ipynb`
+- `06_synthetic_roc_from_experiments.ipynb`
+
+Legacy failed or superseded notebook work is kept under `notebooks/archive/`. Notebook outputs are stripped to keep diffs readable.
+
+## Reproducibility Notes
+
+- Subject-wise evaluation uses fixed seeds: `42`, `123`, `456`, `789`, and `999` where applicable.
+- Closed-set neural analyses use stratified splits and are reported separately from the subject-wise benchmark.
+- Jupyter checkpoints, local manuscript exports, raw download archives, and the Overleaf project directory are ignored by Git.
 
 ## Data and Code Availability
 
-- **Dataset**: The public IBC dataset is downloaded automatically from Zenodo (DOI: [10.5281/zenodo.8214497](https://zenodo.org/records/8214497)).
-- **Source Code**: All code for this study is available in this repository.
+- Dataset: Zenodo DOI `10.5281/zenodo.8214497`
+- Code: this repository
+- Manuscript source: maintained separately in Overleaf
 
 ## Citation
 
-If you use this code or benchmark in your research, please cite our paper:
 ```bibtex
 @article{jin2025ibc,
   title={Reproducible Benchmark of Wavelet-Enhanced Intrabody Communication Biometric Identification},
   author={Jin, Seungmin and Komarov, Mikhail M.},
-  journal={Scientific Reports (TBD)},
   year={2025}
 }
 ```
+
 ## License
-This project is licensed under the MIT License.
+
+MIT License. See `LICENSE`.

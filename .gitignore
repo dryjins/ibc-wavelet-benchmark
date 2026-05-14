@@ -1,0 +1,25 @@
+# Manuscript and local submission files
+69a6c9b8c6d2882423ea2d11/
+submission.pdf
+*.Zone.Identifier
+
+# Local planning / assistant workspace artifacts
+docs/superpowers/
+revision.md
+
+# Python and Jupyter runtime artifacts
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Environments and local configuration
+.env
+.venv/
+venv/
+
+# Download archives; raw CSVs and processed benchmark data are kept separately
+data/raw/*.zip
+
+# Notebook-generated feature caches
+data/processed/*.npy
